@@ -1,0 +1,6 @@
+#pbc properties
+persist.sys.pbc.psys.cap = 10000
+persist.sys.pbc.ibat.cap = 4000
+persist.sys.pbc.inf.socthres = 20
+persist.sys.pbc.pbat.slope = 1.5
+persist.sys.pbc.pbat.intercept = -7

@@ -1,0 +1,31 @@
+#!/system/bin/sh
+#
+# Copyright (c) 2013-2014, NVIDIA CORPORATION.  All rights reserved.
+#
+
+# TESTMODE = 1, RIL stopped, reuse its tty device
+# TESTMODE = 2, RIL running concurrently, use /dev/at_modem
+
+AP=`cat /sys/devices/soc0/family`
+if [ "$AP" == "Tegra14" ]; then
+  SINGLEFLASH=1
+else
+  SINGLEFLASH=0
+fi
+
+TESTMODE=`getprop persist.modem.icera.testmode`
+if [ $TESTMODE -eq 1 ]; then
+  # TM1: reuse RIL AT COM port
+  AT_PORT=`getprop ro.ril.devicename`
+else
+  # TM2:
+  # Single flash: use spare port
+  # Dual flash: reuse GPS port (no spare)
+  if [ SINGLEFLASH -eq 1 ]; then
+    AT_PORT="/dev/at_modem"
+  else
+    AT_PORT=`getprop agpsd.dev_path`
+  fi
+fi
+
+/vendor/bin/ttyfwd -d /dev/ttyGS0 -d $AT_PORT

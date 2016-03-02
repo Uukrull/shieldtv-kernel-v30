@@ -1,0 +1,19 @@
+# NVIDIA Tegra7 "foster-e" development system
+#
+# Copyright (c) 2014, NVIDIA Corporation.  All rights reserved.
+
+## This is the file that is common for mp and diag images, for a single sku.
+
+## Common for all foster_e skus
+$(call inherit-product, $(LOCAL_PATH)/foster_e_common.mk)
+
+PRODUCT_PROPERTY_OVERRIDES += ro.radio.noril=true
+
+## factory script
+ifeq ($(wildcard vendor/nvidia/tegra/apps/diagsuite),vendor/nvidia/tegra/apps/diagsuite)
+PRODUCT_COPY_FILES += \
+    vendor/nvidia/tegra/apps/diagsuite/bin/release/flags/flag_for_foster_e.txt:flag_for_foster_e.txt
+endif
+
+$(call inherit-product, $(LOCAL_PATH)/../foster_common.mk)
+
